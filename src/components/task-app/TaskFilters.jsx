@@ -5,6 +5,9 @@ const STATUS_OPTIONS = [
   { value: "flagged", label: "Flagged" },
 ];
 
+const SELECT_CLASS =
+  "rounded-[10px] border border-slate-200 bg-white px-3 py-1.5 text-[12px] font-medium text-slate-700 outline-none transition hover:border-slate-300 focus:border-[#2170eb]";
+
 export default function TaskFilters({
   filters,
   categoryOptions,
@@ -17,11 +20,11 @@ export default function TaskFilters({
   }
 
   return (
-    <div className="mt-3 flex flex-wrap items-center gap-2">
+    <div className="flex shrink-0 flex-wrap items-center gap-2">
       <select
         value={filters.status}
         onChange={(event) => update("status", event.target.value)}
-        className="rounded-[10px] border border-slate-200 bg-white px-3 py-1.5 text-[12px] font-medium text-slate-700 outline-none"
+        className={SELECT_CLASS}
       >
         {STATUS_OPTIONS.map((option) => (
           <option key={option.value} value={option.value}>
@@ -33,7 +36,7 @@ export default function TaskFilters({
       <select
         value={filters.category}
         onChange={(event) => update("category", event.target.value)}
-        className="rounded-[10px] border border-slate-200 bg-white px-3 py-1.5 text-[12px] font-medium text-slate-700 outline-none"
+        className={SELECT_CLASS}
       >
         <option value="all">All projects</option>
         {categoryOptions.map((option) => (
@@ -46,7 +49,7 @@ export default function TaskFilters({
       <select
         value={filters.bucket}
         onChange={(event) => update("bucket", event.target.value)}
-        className="rounded-[10px] border border-slate-200 bg-white px-3 py-1.5 text-[12px] font-medium text-slate-700 outline-none"
+        className={SELECT_CLASS}
       >
         <option value="all">All lists</option>
         {bucketOptions.map((option) => (
@@ -59,7 +62,7 @@ export default function TaskFilters({
       <button
         type="button"
         onClick={onReset}
-        className="rounded-[10px] border border-slate-200 bg-white px-3 py-1.5 text-[12px] font-medium text-slate-600 transition hover:border-slate-300 hover:text-slate-900"
+        className="rounded-[10px] px-3 py-1.5 text-[12px] font-medium text-[#2170eb] transition hover:bg-[#eaf1ff]"
       >
         Reset filters
       </button>

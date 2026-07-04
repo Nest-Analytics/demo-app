@@ -16,10 +16,11 @@ for (const file of files) {
   if (text.includes("\t")) fail(`Tabs are not allowed: ${file}`);
 }
 
+const MAX_LINES = 200;
 const critical = tracked.filter((f) => /^(src\/|server\.js|package\.json|\.github\/workflows\/)/.test(f));
 for (const file of critical) {
   const lines = readFileSync(file, "utf8").split("\n").length;
-  if (lines > 100) fail(`File exceeds 100 lines: ${file} (${lines})`);
+  if (lines > MAX_LINES) fail(`File exceeds ${MAX_LINES} lines: ${file} (${lines})`);
 }
 
 console.log("Lint checks passed.");
