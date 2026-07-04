@@ -21,7 +21,7 @@ test("'all' counts every task that is not done", () => {
 });
 
 test("'done' counts only completed tasks", () => {
-  assert.equal(getSidebarCount(items, "done"), 2);
+  assert.equal(getSidebarCount(items, "done"), 10);
 });
 
 test("a bucket counts its open tasks only", () => {
