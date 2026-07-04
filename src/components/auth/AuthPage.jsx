@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Logo from "../task-app/Logo.jsx";
+import PasswordField from "../PasswordField.jsx";
 import { validateCredentials, makeSession, saveSession } from "./auth-utils.js";
 
 const EMPTY = { name: "", email: "", password: "", confirm: "" };
@@ -7,13 +8,13 @@ const EMPTY = { name: "", email: "", password: "", confirm: "" };
 function Field({ label, type, value, onChange, placeholder }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-[13px] font-medium text-slate-700">{label}</span>
+      <span className="mb-2 block text-[13px] font-medium text-slate-700">{label}</span>
       <input
         type={type}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="w-full rounded-[10px] border border-slate-200 bg-[#f8fafc] px-3.5 py-2 text-[14px] text-slate-700 outline-none transition focus:border-[#2170eb] focus:bg-white"
+        className="w-full rounded-[10px] border border-slate-200 bg-[#f8fafc] px-3.5 py-2.5 text-[14px] text-slate-700 outline-none transition focus:border-[#2170eb] focus:bg-white"
       />
     </label>
   );
@@ -62,9 +63,9 @@ export default function AuthPage({ appName, onAuthenticated }) {
             <Field label="Full name" type="text" value={form.name} onChange={(v) => update("name", v)} placeholder="Alice Johnson" />
           ) : null}
           <Field label="Email" type="email" value={form.email} onChange={(v) => update("email", v)} placeholder="you@company.com" />
-          <Field label="Password" type="password" value={form.password} onChange={(v) => update("password", v)} placeholder="••••••••" />
+          <PasswordField label="Password" value={form.password} onChange={(v) => update("password", v)} placeholder="••••••••" />
           {isSignup ? (
-            <Field label="Confirm password" type="password" value={form.confirm} onChange={(v) => update("confirm", v)} placeholder="••••••••" />
+            <PasswordField label="Confirm password" value={form.confirm} onChange={(v) => update("confirm", v)} placeholder="••••••••" />
           ) : null}
 
           {error ? <p className="rounded-[10px] bg-red-50 px-3 py-2 text-[13px] text-red-600">{error}</p> : null}

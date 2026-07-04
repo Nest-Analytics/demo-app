@@ -1,3 +1,56 @@
+import { useState } from "react";
+import PasswordField from "../PasswordField.jsx";
+
+function SecuritySection() {
+  const [next, setNext] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [feedback, setFeedback] = useState(null);
+
+  function submit(event) {
+    event.preventDefault();
+    if (next.length < 6) {
+      setFeedback({ ok: false, text: "Password must be at least 6 characters." });
+      return;
+    }
+    if (next !== confirm) {
+      setFeedback({ ok: false, text: "Passwords do not match." });
+      return;
+    }
+    setNext("");
+    setConfirm("");
+    setFeedback({ ok: true, text: "Password updated." });
+  }
+
+  return (
+    <form
+      onSubmit={submit}
+      className="mt-4 space-y-4 rounded-[16px] border border-slate-200 bg-white p-5 shadow-[0_2px_10px_rgba(15,23,42,0.04)] sm:p-6"
+    >
+      <div>
+        <h2 className="text-[1rem] font-semibold tracking-[-0.02em] text-slate-950">Change password</h2>
+        <p className="mt-1 text-[13px] text-slate-500">Set a new password for your account.</p>
+      </div>
+      <PasswordField label="New password" value={next} onChange={setNext} placeholder="••••••••" />
+      <PasswordField label="Confirm new password" value={confirm} onChange={setConfirm} placeholder="••••••••" />
+      {feedback ? (
+        <p
+          className={`rounded-[10px] px-3 py-2 text-[13px] ${
+            feedback.ok ? "bg-green-50 text-green-700" : "bg-red-50 text-red-600"
+          }`}
+        >
+          {feedback.text}
+        </p>
+      ) : null}
+      <button
+        type="submit"
+        className="rounded-[10px] bg-[linear-gradient(180deg,#4492ff_0%,#2170eb_100%)] px-4 py-2 text-[13px] font-semibold text-white shadow-[0_6px_14px_rgba(32,112,235,0.16)] transition hover:brightness-105"
+      >
+        Update password
+      </button>
+    </form>
+  );
+}
+
 function TextField({ label, value, onChange }) {
   return (
     <label className="block">
@@ -69,6 +122,8 @@ export default function SettingsPage({
         <SelectField label="Default list" value={settings.defaultBucket} onChange={(v) => update("defaultBucket", v)} options={bucketOptions} />
         <TextField label="Default due" value={settings.defaultDue} onChange={(v) => update("defaultDue", v)} />
       </section>
+
+      <SecuritySection />
 
       <section className="mt-4 rounded-[16px] border border-slate-200 bg-white p-5 shadow-[0_2px_10px_rgba(15,23,42,0.04)] sm:p-6">
         <h2 className="text-[1rem] font-semibold tracking-[-0.02em] text-slate-950">Utilities</h2>

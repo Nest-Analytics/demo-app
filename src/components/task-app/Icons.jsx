@@ -93,3 +93,22 @@ export function ChevronIcon() {
     </svg>
   );
 }
+
+export function EyeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+}
+
+export function EyeOffIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M3 3l18 18" />
+      <path d="M10.6 10.6a3 3 0 004.2 4.2" />
+      <path d="M9.9 5.1A9.6 9.6 0 0112 5c6.5 0 10 7 10 7a16.9 16.9 0 01-3.9 4.4M6.6 6.6A16.8 16.8 0 002 12s3.5 7 10 7a9.6 9.6 0 003.5-.6" />
+    </svg>
+  );
+}
