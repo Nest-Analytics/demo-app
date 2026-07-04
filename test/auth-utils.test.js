@@ -40,5 +40,3 @@ test("makeSession derives a name from the email on login", () => {
     email: "ada@b.com",
   });
 });
-
-//comment change
