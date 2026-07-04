@@ -54,6 +54,10 @@ jobs:
         with:
           name: node-app
 
+      # NOTE: startup-command is NOT supported with publish-profile auth, so the
+      # startup command ("node server.js") is configured on the App Service itself
+      # (Portal → Configuration → General settings, or `az webapp config set
+      # --startup-file "node server.js"`). It persists across deploys.
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
@@ -61,5 +65,4 @@ jobs:
           app-name: 'democlasslearn'
           slot-name: 'Production'
           package: release.zip
-          startup-command: 'node server.js'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0C156537C33D4458AA62BC47665291DE }}
