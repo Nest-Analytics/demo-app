@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "test": "node --test",
     "lint": "node scripts/lint.mjs",
     "build": "vite build",
     "postinstall": "npm run build",
