@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read # This is required for actions/checkout
 
     steps:
       - uses: actions/checkout@v4
@@ -23,33 +23,43 @@ jobs:
         with:
           node-version: '24.x'
 
-      - name: npm install, build, and test
+      - name: Install, build, and test
         run: |
           npm install
-          npm run build --if-present
-          npm run test --if-present
+          npm run build
+          npm test
+
+      # Ship only what the server needs at runtime: the built dist/, the server
+      # itself, and package.json (its "type": "module" lets server.js use import).
+      # server.js relies solely on Node built-ins, so no node_modules is required.
+      - name: Assemble deployment package
+        run: |
+          mkdir release
+          cp -r dist server.js package.json startup.sh release/
+          cd release && zip -r ../release.zip . && cd ..
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: .
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: node-app
-      
+
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'democlasslearn'
           slot-name: 'Production'
-          package: .
+          package: release.zip
+          startup-command: 'node server.js'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0C156537C33D4458AA62BC47665291DE }}
