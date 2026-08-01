@@ -12,6 +12,7 @@ export default defineConfig(({ mode }) => {
       host: "0.0.0.0",
       port: devPort,
       strictPort: true,
+      allowedHosts: [".azurecontainerapps.io"],
     },
   };
 });
