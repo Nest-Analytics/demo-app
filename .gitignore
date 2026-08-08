@@ -7,3 +7,5 @@ dist/
 .claude
 
 infra/
+
+.github/workflows/deploy-oidc.yml
