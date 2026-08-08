@@ -66,8 +66,3 @@ jobs:
             --name "$APP_NAME" \
             --resource-group "$RESOURCE_GROUP" \
             --image "${ACR_NAME}.azurecr.io/${APP_NAME}:${{ github.sha }}" \
-            --cpu 0.5 \
-            --memory 1.0Gi \
-            --min-replicas 1 \
-            --max-replicas 3 \
-            --target-port 3000
