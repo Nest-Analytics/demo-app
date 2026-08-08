@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: production
+      name: prod
     steps:
       # Separate runner, so this job needs its own Azure login. No checkout needed
       - uses: azure/login@v2
