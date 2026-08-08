@@ -8,4 +8,4 @@ dist/
 
 infra/
 
-.github/workflows/deploy-oidc.yml
+.github/workflows/container-deploy.yml
