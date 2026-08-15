@@ -12,7 +12,7 @@ permissions:
 
 env:
     AKS_CLUSTER_NAME: demo-aks-cluster
-    K8S_DEPLOYMENT: demo-aks-deployment
+    K8S_DEPLOYMENT: demo-app-deployment
     IMAGE: ghcr.io/nest-analytics/demo-app
     RESOURCE_GROUP: containerrg
     K8S_MANIFEST: infra/aks
