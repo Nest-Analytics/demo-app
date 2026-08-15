@@ -12,3 +12,5 @@ infra/*
 .github/workflows/container-deploy.yml
 
 .github/workflows/aks-deploy.yml
+
+.github/workflows/deploy.yml
