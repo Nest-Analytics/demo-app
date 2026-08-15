@@ -6,6 +6,7 @@ node_modules/
 dist/
 .claude
 
-infra/
+infra/*
+!infra/aks/
 
 .github/workflows/container-deploy.yml
