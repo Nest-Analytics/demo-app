@@ -10,3 +10,5 @@ infra/*
 !infra/aks/
 
 .github/workflows/container-deploy.yml
+
+.github/workflows/aks-deploy.yml

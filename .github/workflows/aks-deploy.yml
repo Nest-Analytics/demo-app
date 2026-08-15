@@ -11,7 +11,6 @@ permissions:
 
 env:
   IMAGE: ghcr.io/nest-analytics/demo-app # GHCR rejects uppercase, so not Nest-Analytics
-  APP_NAME: demo-app
   RESOURCE_GROUP: containerrg
   AKS_CLUSTER: demo-aks-cluster
   K8S_DEPLOYMENT: demo-app-deployment
@@ -47,8 +46,9 @@ jobs:
 
       - name: Build and push image to GHCR
         run: |
-          docker build -t "$IMAGE:${{ github.sha }}" .
-          docker push "$IMAGE:${{ github.sha }}"
+          docker build -t "${IMAGE}:${{ github.sha }}" -t "${IMAGE}:latest" .
+          docker push "${IMAGE}:${{ github.sha }}"
+          docker push "${IMAGE}:latest"
 
   deploy:
     runs-on: ubuntu-latest
@@ -74,7 +74,8 @@ jobs:
 
       - name: Roll out the new image
         run: |
+          # Pin the manifest to this commit's image before applying, so apply and the
+          # running spec agree. Using apply + "set image" made two rollouts per run.
+          sed -i "s|${IMAGE}:latest|${IMAGE}:${{ github.sha }}|" "$K8S_MANIFESTS/deployment.yml"
           kubectl apply -f "$K8S_MANIFESTS"
-          kubectl set image "deployment/$K8S_DEPLOYMENT" \
-            "$APP_NAME=$IMAGE:${{ github.sha }}"
           kubectl rollout status "deployment/$K8S_DEPLOYMENT" --timeout=180s
