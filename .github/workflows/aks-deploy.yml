@@ -13,7 +13,7 @@ env:
   IMAGE: ghcr.io/nest-analytics/demo-app # GHCR rejects uppercase, so not Nest-Analytics
   APP_NAME: demo-app
   RESOURCE_GROUP: containerrg
-  AKS_CLUSTER: demo-aks
+  AKS_CLUSTER: demo-aks-cluster
   K8S_DEPLOYMENT: demo-app-deployment
   K8S_MANIFESTS: infra/aks # applies deployment.yml and service.yml
 
