@@ -4,7 +4,7 @@ metadata:
   name: demo-app-deployment
 
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: demo-app
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: demo-app
-          image: ghcr.io/nest-analytics/demo-app:latest
+          image: ghcr.io/nest-analytics/demo-app:1
           ports:
             - containerPort: 3000
   
