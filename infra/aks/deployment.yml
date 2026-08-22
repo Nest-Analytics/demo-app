@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: demo-app
-          image: ghcr.io/nest-analytics/demo-app:1
+          image: ghcr.io/nest-analytics/demo-app:3d34c5ca02589d8c905186a85a9875a19cec5bcd
           ports:
             - containerPort: 3000
   
