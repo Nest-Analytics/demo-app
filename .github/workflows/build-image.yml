@@ -1,0 +1,79 @@
+name: Build and push image to GHCR
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  IMAGE: ghcr.io/nest-analytics/demo-app
+
+jobs:
+  # Gate: a failing build or test should not produce an image
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        run: |
+          docker build -t "${IMAGE}:${{ github.sha }}" -t "${IMAGE}:latest" .
+          docker push "${IMAGE}:${{ github.sha }}"
+          docker push "${IMAGE}:latest"
+
+      - name: Show what was pushed
+        run: |
+          echo "pushed ${IMAGE}:${{ github.sha }}"
+          echo "pushed ${IMAGE}:latest"
+
+  # Write the new tag into the manifest so ArgoCD sees a real diff and syncs itself
+  bump-manifest:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Point the deployment at this commit's image
+        run: |
+          # Match any current tag, so this keeps working after the first bump
+          sed -i "s|image: ${IMAGE}:.*|image: ${IMAGE}:${{ github.sha }}|" infra/aks/deployment.yml
+          git diff --stat
+
+      - name: Commit the bump
+        run: |
+          if git diff --quiet; then
+            echo "manifest already on this tag, nothing to commit"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Deploy ${{ github.sha }} [skip ci]"
+          git push
